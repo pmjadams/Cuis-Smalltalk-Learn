@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2950] on 18 October 2016 at 2:07:37 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2953] on 20 October 2016 at 2:54:56 pm'!
 'Description Enter a word in English or Interlingua and find the corresponding Interlingua or English usage.'!
-!provides: 'IA-EN-Dictionary' 1 13!
+!provides: 'IA-EN-Dictionary' 1 14!
 !requires: 'Morphic-Widgets-Extras' 1 7 nil!
 !classDefinition: #IEDictWindow category: #'IA-EN-Dictionary'!
 SystemWindow subclass: #IEDictWindow
@@ -53,7 +53,12 @@ IEDict englishStarts: 'day'.
 
 IEDictWindow open. "-> opens a new IEDictWindow"!
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/18/2016 08:40:40'!
+!IEDictWindow methodsFor: 'color' stamp: 'KenD 10/20/2016 14:50:51'!
+backgroundColor
+
+	^  Theme current transcript muchLighter! !
+
+!IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/20/2016 14:49:57'!
 buildMorphicWindow
 	"Build and lay out the window and answer it."
 
@@ -68,7 +73,7 @@ buildMorphicWindow
 	model when: #newSearchResult send: #searchResultsChanged to: self.
 	model interlinguaContainsClick. "set initial text"
 	
-	"window color is set in self class open"
+	"window color is set in SystemWindow>>openInWorld and self class open"
 	^ self
 ! !
 
@@ -248,18 +253,13 @@ textSizeUnit
 
 	^ AbstractFont default height! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/16/2016 15:58:12'!
+!IEDictWindow methodsFor: 'color' stamp: 'KenD 10/16/2016 15:58:12'!
 windowColor
 	"Use current theme"
 	
 	^Theme current transcript ! !
 
-!IEDictWindow class methodsFor: 'windowColor' stamp: 'KenD 10/16/2016 13:02:59'!
-backgroundColor
-
-	^  Theme current transcript muchLighter! !
-
-!IEDictWindow class methodsFor: 'instance creation' stamp: 'KenD 10/16/2016 13:51:37'!
+!IEDictWindow class methodsFor: 'instance creation' stamp: 'KenD 10/20/2016 14:51:39'!
 open
 "
 	IEDictWindow open.
@@ -267,7 +267,7 @@ open
 	| newSelf |
 	newSelf := self open: (IEDict new) label: 'Interlingua <--> English'.
 	"Override default color resets in SystemWindow>>openInWorld"
-	newSelf color: self backgroundColor.
+	newSelf color: newSelf backgroundColor.
 	newSelf layoutMorph submorphs last "the text entry layout morph"
 		color: (Theme current textHighlight lighter).
 	^ newSelf
