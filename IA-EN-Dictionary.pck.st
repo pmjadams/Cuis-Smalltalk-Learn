@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2953] on 19 October 2016 at 4:09:45 pm'!
+'From Cuis 4.2 of 25 July 2013 [latest update: #2953] on 20 October 2016 at 2:38:17 pm'!
 'Description Search for a word in English or Interlingua and find its corresponding Interlingua or English usage.'!
-!provides: 'IA-EN-Dictionary' 1 1!
+!provides: 'IA-EN-Dictionary' 1 2!
 !classDefinition: #IEDict category: #'IA-EN-Dictionary'!
 Object subclass: #IEDict
 	instanceVariableNames: ''
@@ -36,23 +36,23 @@ IEDict englishStarts: 'day'.
 
 IEDictWindow open. "-> opens a new IEDictWindow"!
 
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/19/2016 16:05:59'!
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/20/2016 14:37:46'!
 englishContains: aString
     "Answer all definition pairs which contain aString looking in the Interlingua side"
 
     | matchStr |
     matchStr :=  ('*' , aString , '*' ) .
 
-    ^DictData select: [ :pairArray | matchStr match: (pairArray at: 2) ]! !
+    ^ DictData select: [ :pairArray | matchStr match: (pairArray at: 2) ]! !
 
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/19/2016 16:06:16'!
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/20/2016 14:37:41'!
 englishStarts: aString
     "Answer all definition pairs which contain aString looking in the Interlingua side"
 
     | matchStr |
     matchStr :=  (aString , '*' ) .
 
-    ^DictData select: [ :pairArray | matchStr match: (pairArray at: 2) ]! !
+    ^ DictData select: [ :pairArray | matchStr match: (pairArray at: 2) ]! !
 
 !IEDict class methodsFor: 'class initialization' stamp: 'KenD 10/19/2016 16:02:28'!
 initialize
@@ -74,21 +74,21 @@ initialize
 		]
 	] ! !
 
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/19/2016 16:05:07'!
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/20/2016 14:37:49'!
 interlinguaContains: aString
     "Answer all definition pairs which contain aString looking in the Interlingua side"
 
     | matchStr |
     matchStr :=  ('*' , aString , '*' ) .
 
-    ^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
+    ^ DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
 
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/19/2016 16:06:35'!
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/20/2016 14:37:54'!
 interlinguaStarts: aString
     "Answer all definition pairs which contain aString looking in the Interlingua side"
 
     | matchStr |
     matchStr :=  (aString , '*' ) .
 
-    ^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
+    ^ DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
 IEDict initialize!
