@@ -1,7 +1,7 @@
 Cuis-Smalltalk-IA-EN
 ====================
 ````Smalltalk
-	Feature require: #'Interlingua-English-Lookup'
+	Feature require: #'IA-EN-Dictionary'
 	IEDictWindow open.
 ````
 
