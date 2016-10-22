@@ -7,7 +7,9 @@ Cuis-Smalltalk-IA-EN
 
 # Techniques of Interest
 
-- Shows how to set up a specialized SystemWindow using method #buildMorphicWindow.
+- Shows how to set up a specialized SystemWindow using method `buildMorphicWindow`.
+
+- Uses `LayoutMorph`s and `LayoutSpec`s
 
 - Shows a useful application built with a small amount of code.
 
