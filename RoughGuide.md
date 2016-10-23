@@ -1,5 +1,5 @@
-Cuis-Smalltalk-IA-EN
-====================
+Cuis-Smalltalk-IA-EN-Dictionary
+===============================
 ````Smalltalk
 	Feature require: #'IA-EN-Dictionary'
 	IEDictWindow open.

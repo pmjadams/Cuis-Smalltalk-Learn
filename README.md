@@ -1,5 +1,5 @@
-Cuis-Ia-En
-==========
+Cuis-IA-EN-Dictionary
+=====================
 
 Interlingua &lt;--> English lookup window
 
