@@ -1,6 +1,6 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2953] on 20 October 2016 at 2:54:56 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #2974] on 7 November 2016 at 2:27:33 pm'!
 'Description Enter a word in English or Interlingua and find the corresponding Interlingua or English usage.'!
-!provides: 'IA-EN-Dictionary' 1 14!
+!provides: 'IA-EN-Dictionary' 1 15!
 !requires: 'Morphic-Widgets-Extras' 1 7 nil!
 !classDefinition: #IEDictWindow category: #'IA-EN-Dictionary'!
 SystemWindow subclass: #IEDictWindow
@@ -75,6 +75,24 @@ buildMorphicWindow
 	
 	"window color is set in SystemWindow>>openInWorld and self class open"
 	^ self
+! !
+
+!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:20:04'!
+copyResultsToClipboard
+
+	self resultMorph copyListToClipboard! !
+
+!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:19:56'!
+copySelectedResultToClipboard
+
+	| selectionIndex |
+	selectionIndex := self model resultIndex.
+	
+	selectionIndex isZero 
+		ifTrue:
+			[self flash] "nothing selected"
+		ifFalse:
+			[Clipboard storeObject: (self resultMorph getListItem: selectionIndex) asString]
 ! !
 
 !IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/15/2016 13:39:57'!
@@ -208,7 +226,7 @@ makeEntryArea
 		yourself
 ! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/15/2016 15:24:32'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 11/7/2016 14:25:13'!
 makeResultsArea
 	"Answer a LayoutMoph containing the results of the query"
 	
@@ -218,8 +236,8 @@ makeResultsArea
 		indexGetter: #resultIndex
 		indexSetter: #resultIndex:
 		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil).
+		menuGetter: #resultsMenu
+		keystrokeAction: #resultsKey:from:).
 		
 	^ resultMorph 
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.98);  
@@ -235,6 +253,17 @@ promptMorph
 resultMorph
 
 	^ resultMorph! !
+
+!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:19:47'!
+resultsMenu
+
+	| aMenu |
+	aMenu _ MenuMorph new defaultTarget: self.
+	aMenu addList: #(
+		('copy selected (c)'	copySelectedResultToClipboard)
+		('copyAll (a)'	     		copyResultsToClipboard)
+		).
+	^ aMenu! !
 
 !IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:07:35'!
 searchResultsChanged
