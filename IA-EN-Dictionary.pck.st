@@ -1,7 +1,10 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #2974] on 7 November 2016 at 2:27:33 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3319] on 10 May 2018 at 3:24:34 pm'!
 'Description Enter a word in English or Interlingua and find the corresponding Interlingua or English usage.'!
-!provides: 'IA-EN-Dictionary' 1 15!
+!provides: 'IA-EN-Dictionary' 1 16!
 !requires: 'Morphic-Widgets-Extras' 1 7 nil!
+SystemOrganization addCategory: #'IA-EN-Dictionary'!
+
+
 !classDefinition: #IEDictWindow category: #'IA-EN-Dictionary'!
 SystemWindow subclass: #IEDictWindow
 	instanceVariableNames: 'entryTextMorph promptMorph resultMorph'
@@ -58,6 +61,12 @@ backgroundColor
 
 	^  Theme current transcript muchLighter! !
 
+!IEDictWindow methodsFor: 'color' stamp: 'KenD 10/16/2016 15:58:12'!
+windowColor
+	"Use current theme"
+	
+	^Theme current transcript ! !
+
 !IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/20/2016 14:49:57'!
 buildMorphicWindow
 	"Build and lay out the window and answer it."
@@ -76,76 +85,6 @@ buildMorphicWindow
 	"window color is set in SystemWindow>>openInWorld and self class open"
 	^ self
 ! !
-
-!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:20:04'!
-copyResultsToClipboard
-
-	self resultMorph copyListToClipboard! !
-
-!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:19:56'!
-copySelectedResultToClipboard
-
-	| selectionIndex |
-	selectionIndex := self model resultIndex.
-	
-	selectionIndex isZero 
-		ifTrue:
-			[self flash] "nothing selected"
-		ifFalse:
-			[Clipboard storeObject: (self resultMorph getListItem: selectionIndex) asString]
-! !
-
-!IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/15/2016 13:39:57'!
-defaultSeparation
-	"Answer the number of pixels between fields/layouts"
-	
-	^ 5! !
-
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:35:48'!
-englishContainsClick
-
-	self model searchString: self searchString; englishContainsClick! !
-
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:04'!
-englishStartsClick
-
-	self model searchString: self searchString; englishStartsClick! !
-
-!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 1/3/2013 18:26'!
-entryTextMorph
-	
-	^entryTextMorph! !
-
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/18/2016 13:48:56'!
-fontPreferenceChanged
-
-  super fontPreferenceChanged.
-  self promptMorph 
-		layoutSpec: (LayoutSpec 
-						proportionalWidth: 0.3; 
-						fixedWidth: 
-							(self promptMorph measureContents x)).
-  self layoutMorph submorphs last "text entry layout"
-	layoutSpec: (LayoutSpec
-					proportionalWidth: 1 
-					fixedHeight: self defaultSeparation * 2 + self textSizeUnit).
-					
-	self morphExtent: (self morphExtent max: self initialExtent).! !
-
-!IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/16/2016 16:02:59'!
-initialExtent
-
-	^ (30 @ 16) * self textSizeUnit ! !
-
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:49'!
-interlinguaContainsClick
-
-	self model searchString: self searchString; interlinguaContainsClick! !
-
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:26'!
-interlinguaStartsClick
-
-	self model searchString: self searchString; interlinguaStartsClick! !
 
 !IEDictWindow methodsFor: 'GUI building' stamp: 'KenD 10/16/2016 16:03:37'!
 makeButtonArea
@@ -244,15 +183,23 @@ makeResultsArea
 		color: (Theme current textHighlight);
 		yourself! !
 
-!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 15:07:29'!
-promptMorph
+!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:20:04'!
+copyResultsToClipboard
 
-	^ promptMorph! !
+	self resultMorph copyListToClipboard! !
 
-!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 13:29:56'!
-resultMorph
+!IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:19:56'!
+copySelectedResultToClipboard
 
-	^ resultMorph! !
+	| selectionIndex |
+	selectionIndex := self model resultIndex.
+	
+	selectionIndex isZero 
+		ifTrue:
+			[self flash] "nothing selected"
+		ifFalse:
+			[Clipboard storeObject: (self resultMorph getListItem: selectionIndex) asString]
+! !
 
 !IEDictWindow methodsFor: 'menu' stamp: 'KenD 11/7/2016 14:19:47'!
 resultsMenu
@@ -265,16 +212,16 @@ resultsMenu
 		).
 	^ aMenu! !
 
-!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:07:35'!
-searchResultsChanged
-	"Display updated search results"
+!IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/15/2016 13:39:57'!
+defaultSeparation
+	"Answer the number of pixels between fields/layouts"
 	
-	resultMorph updateList ! !
+	^ 5! !
 
-!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 13:25:57'!
-searchString
+!IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/16/2016 16:02:59'!
+initialExtent
 
-	^ entryTextMorph contents asString ! !
+	^ (30 @ 16) * self textSizeUnit ! !
 
 !IEDictWindow methodsFor: 'geometry' stamp: 'KenD 10/15/2016 09:51:09'!
 textSizeUnit
@@ -282,11 +229,67 @@ textSizeUnit
 
 	^ AbstractFont default height! !
 
-!IEDictWindow methodsFor: 'color' stamp: 'KenD 10/16/2016 15:58:12'!
-windowColor
-	"Use current theme"
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:35:48'!
+englishContainsClick
+
+	self model searchString: self searchString; englishContainsClick! !
+
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:04'!
+englishStartsClick
+
+	self model searchString: self searchString; englishStartsClick! !
+
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/18/2016 13:48:56'!
+fontPreferenceChanged
+
+  super fontPreferenceChanged.
+  self promptMorph 
+		layoutSpec: (LayoutSpec 
+						proportionalWidth: 0.3; 
+						fixedWidth: 
+							(self promptMorph measureContents x)).
+  self layoutMorph submorphs last "text entry layout"
+	layoutSpec: (LayoutSpec
+					proportionalWidth: 1 
+					fixedHeight: self defaultSeparation * 2 + self textSizeUnit).
+					
+	self morphExtent: (self morphExtent max: self initialExtent).! !
+
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:49'!
+interlinguaContainsClick
+
+	self model searchString: self searchString; interlinguaContainsClick! !
+
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:36:26'!
+interlinguaStartsClick
+
+	self model searchString: self searchString; interlinguaStartsClick! !
+
+!IEDictWindow methodsFor: 'events' stamp: 'KenD 10/16/2016 14:07:35'!
+searchResultsChanged
+	"Display updated search results"
 	
-	^Theme current transcript ! !
+	resultMorph updateList ! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 1/3/2013 18:26'!
+entryTextMorph
+	
+	^entryTextMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 15:07:29'!
+promptMorph
+
+	^ promptMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 13:29:56'!
+resultMorph
+
+	^ resultMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'KenD 10/16/2016 13:25:57'!
+searchString
+
+	^ entryTextMorph contents asString ! !
 
 !IEDictWindow class methodsFor: 'instance creation' stamp: 'KenD 10/20/2016 14:51:39'!
 open
@@ -307,7 +310,7 @@ whyMe
 
 	^ IEDict whyMe 	! !
 
-!IEDictWindow class methodsFor: 'menu-world' stamp: 'KenD 10/16/2016 14:46:08'!
+!IEDictWindow class methodsFor: 'menu-world' stamp: 'KenD 5/10/2018 15:24:01'!
 worldMenuForOpenGroup
 	"Answer the information required to add me to the World menu-->Open.. submenu"
 
@@ -330,6 +333,10 @@ worldMenuForOpenGroup
 		
 			at: #balloonText
 			put: 'Interlingua<-->English Lookup';
+			
+			at: #icon
+			put: #findIcon;
+			
 		yourself.! !
 
 !IEDict methodsFor: 'ui support' stamp: 'KenD 10/16/2016 13:55:46'!
@@ -345,14 +352,6 @@ englishStartsClick
 	self searchResult:  (IEDict englishStarts: (self searchString)).
 	self resultIndex: 0.
 ! !
-
-!IEDict methodsFor: 'initialization' stamp: 'KenD 10/17/2016 15:51:58'!
-initialize
-
-	super initialize.
-	searchString := 'salute'.
-	searchResult := #().
-	resultIndex    := 0.! !
 
 !IEDict methodsFor: 'ui support' stamp: 'KenD 10/16/2016 13:55:59'!
 interlinguaContainsClick
@@ -373,6 +372,14 @@ resultAsList
 	"Answer a list of form 'this <---> that' "
 	
 	^ self searchResult collect:[ :elt | (elt at: 1) , ' <---> ', (elt at: 2) ]! !
+
+!IEDict methodsFor: 'initialization' stamp: 'KenD 10/17/2016 15:51:58'!
+initialize
+
+	super initialize.
+	searchString := 'salute'.
+	searchResult := #().
+	resultIndex    := 0.! !
 
 !IEDict methodsFor: 'accessing' stamp: 'KenD 10/15/2016 14:33:12'!
 resultIndex
@@ -423,6 +430,24 @@ englishStarts: aString
 	
 	^DictData select: [ :pairArray | matchStr match: (pairArray at: 2) ]! !
 
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/14/2016 14:58:32'!
+interlinguaContains: aString
+	"Answer all definition pairs which contain aString looking in the Interlingua side"
+
+	| matchStr |
+	matchStr :=  ('*' , aString , '*' ) .
+	
+	^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
+
+!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/14/2016 14:58:11'!
+interlinguaStarts: aString
+	"Answer all definition pairs which starts with aString looking in the Interlingua side"
+
+	| matchStr |
+	matchStr :=  aString , '*'  .
+	
+	^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
+
 !IEDict class methodsFor: 'class initialization' stamp: 'KenD 10/13/2016 16:03:38'!
 initialize
 	"Read in my data"
@@ -443,24 +468,6 @@ initialize
 		curIndex := 1 + curIndex.
 	]
 ]! !
-
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/14/2016 14:58:32'!
-interlinguaContains: aString
-	"Answer all definition pairs which contain aString looking in the Interlingua side"
-
-	| matchStr |
-	matchStr :=  ('*' , aString , '*' ) .
-	
-	^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
-
-!IEDict class methodsFor: 'lookup' stamp: 'KenD 10/14/2016 14:58:11'!
-interlinguaStarts: aString
-	"Answer all definition pairs which starts with aString looking in the Interlingua side"
-
-	| matchStr |
-	matchStr :=  aString , '*'  .
-	
-	^DictData select: [ :pairArray | matchStr match: (pairArray at: 1) ]! !
 
 !IEDict class methodsFor: 'documentation' stamp: 'KenD 10/16/2016 13:38:47'!
 whyMe
