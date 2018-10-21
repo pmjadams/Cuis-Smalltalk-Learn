@@ -1,7 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3319] on 10 May 2018 at 3:24:34 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3430] on 21 October 2018 at 3:26:50 pm'!
 'Description Enter a word in English or Interlingua and find the corresponding Interlingua or English usage.'!
-!provides: 'IA-EN-Dictionary' 1 16!
+!provides: 'IA-EN-Dictionary' 1 17!
 !requires: 'Morphic-Widgets-Extras' 1 7 nil!
+!requires: 'Cuis-Base' 50 3430 nil!
 SystemOrganization addCategory: #'IA-EN-Dictionary'!
 
 
@@ -310,34 +311,28 @@ whyMe
 
 	^ IEDict whyMe 	! !
 
-!IEDictWindow class methodsFor: 'menu-world' stamp: 'KenD 5/10/2018 15:24:01'!
+!IEDictWindow class methodsFor: 'menu-world' stamp: 'KenD 10/17/2018 23:41:06'!
 worldMenuForOpenGroup
 	"Answer the information required to add me to the World menu-->Open.. submenu"
+	"i.e. an array with one item: a Dictionary"
+	| arr |
+	arr := `{{
+			#itemGroup 		-> 		10.
+			#itemOrder 		-> 		20.
+			#label 			->			'IA<-->EN'.
+			#object 			-> 		IEDictWindow.
+			#selector 		-> 		#open.
+			#balloonText 	-> 		'Interlingua<-->English Lookup'.
+		} asDictionary}`.
+	(arr at: 1) at: #icon put: self searchIcon.
+	^arr
 
-	^ Dictionary new
-		
-			at: #itemGroup
-			put: 10;
-		
-			at: #itemOrder
-			put: 20;
-		
-			at: #label
-			put: 'IA<-->EN';
-		
-			at: #object
-			put: self;
-		
-			at: #selector
-			put: #open;
-		
-			at: #balloonText
-			put: 'Interlingua<-->English Lookup';
-			
-			at: #icon
-			put: #findIcon;
-			
-		yourself.! !
+! !
+
+!IEDictWindow class methodsFor: 'accessing' stamp: 'KenD 10/17/2018 23:36:58'!
+searchIcon
+
+	^ Theme content from: 'Theme' get: {'16x16'. 'actions'. 'system-search.png'}.! !
 
 !IEDict methodsFor: 'ui support' stamp: 'KenD 10/16/2016 13:55:46'!
 englishContainsClick
