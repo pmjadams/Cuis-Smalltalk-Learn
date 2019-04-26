@@ -3,18 +3,12 @@ Cuis-IA-EN-Dictionary
 
 Interlingua &lt;--> English lookup window
 
-Tested in Cuis 4.2 rev 3319
+now at
 
-To load the package
-````Smalltalk
-	Feature require: #'IA-EN-Dictionary'
-````
+  https://github.com/Cuis-Smalltalk/CodeExamples/tree/master/IA-EN-Dictionary
 
-Then execute
-````Smalltalk
-    IEDictWindow open.
-````
+tutorial at
 
-Or use the World menu->Open command
+  https://github.com/Cuis-Smalltalk-Learning/Learning-Cuis/blob/master/SamplePackage1.md
 
 ![IA<->EN Lookup](IA\<-\>EN-lookup.png)
