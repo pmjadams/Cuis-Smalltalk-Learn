@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4254] on 14 September 2020 at 3:32:56 pm'!
+'From Cuis 5.0 [latest update: #4254] on 16 September 2020 at 2:53:08 pm'!
 'Description '!
-!provides: 'IA-EN-Dictionary' 1 3!
+!provides: 'IA-EN-Dictionary' 1 4!
 !requires: 'Morphic-Widgets-Extras' 1 23 nil!
 SystemOrganization addCategory: #'IA-EN-Dictionary'!
 
@@ -41,9 +41,9 @@ open
 	
 	self open: (IEDict new) label: 'Interlingua <-> English'! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/14/2020 14:17:49'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/16/2020 14:46:48'!
 buildMorphicWindow
-	"build and ly out the window and answer it"
+	"build and layout the window and answer it"
 
 	self layoutMorph
 		beColumn; "the default"
@@ -101,12 +101,12 @@ makeButtonArea
 			addMorph: englishButtonLayout ;
 			yourself! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/14/2020 14:30:31'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/16/2020 14:49:38'!
 makeEntryArea
 	"Answer a LayoutMoph containing the prompt and text entry area"
 	
-	| entryLayout entryHeigth |
-	entryHeigth := self defaultSeparation * 2 + self textSizeUnit.
+	| entryLayout entryHeight |
+	entryHeight := self defaultSeparation * 2 + self textSizeUnit.
 	
 	entryLayout := LayoutMorph newRow.
 	
@@ -124,7 +124,7 @@ makeEntryArea
 			
 	^ entryLayout 
 		separation: self defaultSeparation;
-		layoutSpec: (LayoutSpec proportionalWidth: 1 fixedHeight: entryHeigth);
+		layoutSpec: (LayoutSpec proportionalWidth: 1 fixedHeight: entryHeight);
 		addMorph: promptMorph;
 		addMorph: entryTextMorph;
 		padding: #left
