@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4254] on 16 September 2020 at 2:53:08 pm'!
+'From Cuis 5.0 [latest update: #4377] on 21 September 2020 at 2:14:20 pm'!
 'Description '!
-!provides: 'IA-EN-Dictionary' 1 4!
+!provides: 'IA-EN-Dictionary' 1 6!
 !requires: 'Morphic-Widgets-Extras' 1 23 nil!
 SystemOrganization addCategory: #'IA-EN-Dictionary'!
 
@@ -41,7 +41,7 @@ open
 	
 	self open: (IEDict new) label: 'Interlingua <-> English'! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/16/2020 14:46:48'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/21/2020 13:50:54'!
 buildMorphicWindow
 	"build and layout the window and answer it"
 
@@ -51,10 +51,14 @@ buildMorphicWindow
 		layoutSpec: LayoutSpec useAll;
 		addMorph: self makeEntryArea;
 		addMorph: self makeButtonArea;
-		addMorph: self makeResultsArea;
-		yourself! !
+		addMorph: self makeResultsArea.
+		
+	model when: #newSearchResult send: #searchResultsChanged to: self.
+	model interlinguaContainsClick. "set initial text"
+	
+	^ self! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/14/2020 14:32:56'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/18/2020 15:15:41'!
 makeButtonArea
 	"Answer a LayoutMorph with our four buttons -- a column of two rows"
 	
@@ -64,8 +68,7 @@ makeButtonArea
 	
 	interlinguaButtonLayout := LayoutMorph newRow. "a row of two buttons"
 
-	interlinguaButtonLayout 
-		padding: #center; 
+	interlinguaButtonLayout  
 		separation: 2;
 		addMorph: 
 			(PluggableButtonMorph 
@@ -80,8 +83,7 @@ makeButtonArea
 
 	englishButtonLayout := LayoutMorph newRow. "a row of two buttons"
 									.
-	englishButtonLayout 
-		padding: #center; 
+	englishButtonLayout  
 		separation: 2;
 		addMorph: 
 			(PluggableButtonMorph 
@@ -101,7 +103,7 @@ makeButtonArea
 			addMorph: englishButtonLayout ;
 			yourself! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/16/2020 14:49:38'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/18/2020 15:14:38'!
 makeEntryArea
 	"Answer a LayoutMoph containing the prompt and text entry area"
 	
@@ -127,7 +129,6 @@ makeEntryArea
 		layoutSpec: (LayoutSpec proportionalWidth: 1 fixedHeight: entryHeight);
 		addMorph: promptMorph;
 		addMorph: entryTextMorph;
-		padding: #left
 		yourself! !
 
 !IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/14/2020 14:37:07'!
@@ -168,17 +169,40 @@ interlinguaStartsClick
 
 	self model searchString: self searchString; interlinguaStartsClick! !
 
+!IEDictWindow methodsFor: 'events' stamp: 'PA 9/21/2020 13:51:28'!
+searchResultsChanged
+	"Display updated search results"
+	
+	resultMorph updateList ! !
+
 !IEDictWindow methodsFor: 'geometry' stamp: 'PA 9/14/2020 14:47:27'!
 defaultSeparation
 	"Answer the number of pixels between fields/layouts"
 	
 	^ 5 "pixels"! !
 
-!IEDictWindow methodsFor: 'geometry' stamp: 'PA 9/14/2020 14:47:51'!
+!IEDictWindow methodsFor: 'geometry' stamp: 'PA 9/18/2020 15:14:04'!
 textSizeUnit
 	"Answer the scaling factor for sizing; note  method #fontPreferenceChanged"
 
-	^ AbstractFont default height! !
+	^  1.0! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'PA 9/18/2020 16:55:28'!
+entryTextMorph
+	^entryTextMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'PA 9/18/2020 16:55:59'!
+promptMorph
+	^ promptMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'PA 9/18/2020 16:56:22'!
+resultMorph
+	^ resultMorph! !
+
+!IEDictWindow methodsFor: 'accessing' stamp: 'PA 9/18/2020 16:56:44'!
+searchString
+
+	^ entryTextMorph contents asString ! !
 
 !IEDictWindow class methodsFor: 'instance creation' stamp: 'PA 9/14/2020 15:21:52'!
 open
@@ -193,10 +217,21 @@ resultIndex
 	
 	^ resultIndex! !
 
+!IEDict methodsFor: 'accessing' stamp: 'PA 9/21/2020 14:09:50'!
+resultIndex: arg1
+	
+	resultIndex _ arg1! !
+
 !IEDict methodsFor: 'accessing' stamp: 'PA 9/14/2020 14:55:16'!
 searchResult
 	
 	^ searchResult! !
+
+!IEDict methodsFor: 'accessing' stamp: 'PA 9/21/2020 13:48:20'!
+searchResult: newResult
+
+	searchResult := newResult.
+	self triggerEvent: #newSearchResult! !
 
 !IEDict methodsFor: 'accessing' stamp: 'PA 9/14/2020 14:51:42'!
 searchString
