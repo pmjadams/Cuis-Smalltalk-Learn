@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4377] on 21 September 2020 at 2:14:20 pm'!
+'From Cuis 5.0 [latest update: #4377] on 22 September 2020 at 12:31:59 pm'!
 'Description '!
-!provides: 'IA-EN-Dictionary' 1 6!
+!provides: 'IA-EN-Dictionary' 1 7!
 !requires: 'Morphic-Widgets-Extras' 1 23 nil!
 SystemOrganization addCategory: #'IA-EN-Dictionary'!
 
@@ -31,8 +31,15 @@ GUI for Interlingua <-> English dictionary
 
    IEDictWindow open!
 
-!IEDict commentStamp: '<historical>' prior: 0!
-I embody a specialised dictionary for IA-EN interaction!
+!IEDict commentStamp: 'pa 9/22/2020 10:59:46' prior: 0!
+I embody a specialised dictionary for IA-EN interaction
+
+Class intention
+	I am not like a regular dictionary because I maintain in an array of two element arrays #('Interlingua definition' 'English definition'). All definitions that contain a search match are returned.
+
+
+Instance intention
+	I am the model of an IEDictWindow!
 
 !IEDictWindow methodsFor: 'instance creation' stamp: 'PA 9/12/2020 15:57:12'!
 open
@@ -58,7 +65,7 @@ buildMorphicWindow
 	
 	^ self! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/18/2020 15:15:41'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'pa 9/22/2020 12:25:57'!
 makeButtonArea
 	"Answer a LayoutMorph with our four buttons -- a column of two rows"
 	
@@ -68,7 +75,8 @@ makeButtonArea
 	
 	interlinguaButtonLayout := LayoutMorph newRow. "a row of two buttons"
 
-	interlinguaButtonLayout  
+	interlinguaButtonLayout
+		axisEdgeWeight: #center;
 		separation: 2;
 		addMorph: 
 			(PluggableButtonMorph 
@@ -83,7 +91,8 @@ makeButtonArea
 
 	englishButtonLayout := LayoutMorph newRow. "a row of two buttons"
 									.
-	englishButtonLayout  
+	englishButtonLayout
+		axisEdgeWeight: #center;
 		separation: 2;
 		addMorph: 
 			(PluggableButtonMorph 
@@ -103,7 +112,7 @@ makeButtonArea
 			addMorph: englishButtonLayout ;
 			yourself! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'PA 9/18/2020 15:14:38'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'pa 9/22/2020 12:15:41'!
 makeEntryArea
 	"Answer a LayoutMoph containing the prompt and text entry area"
 	
@@ -125,6 +134,7 @@ makeEntryArea
 			(LayoutSpec proportionalWidth: 0.9).
 			
 	^ entryLayout 
+		axisEdgeWeight: #rowLeft;
 		separation: self defaultSeparation;
 		layoutSpec: (LayoutSpec proportionalWidth: 1 fixedHeight: entryHeight);
 		addMorph: promptMorph;
@@ -181,11 +191,11 @@ defaultSeparation
 	
 	^ 5 "pixels"! !
 
-!IEDictWindow methodsFor: 'geometry' stamp: 'PA 9/18/2020 15:14:04'!
+!IEDictWindow methodsFor: 'geometry' stamp: 'pa 9/22/2020 12:28:52'!
 textSizeUnit
 	"Answer the scaling factor for sizing; note  method #fontPreferenceChanged"
 
-	^  1.0! !
+	^  12.0! !
 
 !IEDictWindow methodsFor: 'accessing' stamp: 'PA 9/18/2020 16:55:28'!
 entryTextMorph
@@ -217,10 +227,10 @@ resultIndex
 	
 	^ resultIndex! !
 
-!IEDict methodsFor: 'accessing' stamp: 'PA 9/21/2020 14:09:50'!
-resultIndex: arg1
+!IEDict methodsFor: 'accessing' stamp: 'pa 9/22/2020 11:00:54'!
+resultIndex: aNumber
 	
-	resultIndex _ arg1! !
+	resultIndex _ aNumber! !
 
 !IEDict methodsFor: 'accessing' stamp: 'PA 9/14/2020 14:55:16'!
 searchResult
