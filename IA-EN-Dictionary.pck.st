@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4377] on 22 September 2020 at 12:31:59 pm'!
+'From Cuis 5.0 [latest update: #4377] on 24 September 2020 at 3:15:34 pm'!
 'Description '!
-!provides: 'IA-EN-Dictionary' 1 7!
+!provides: 'IA-EN-Dictionary' 1 8!
 !requires: 'Morphic-Widgets-Extras' 1 23 nil!
 SystemOrganization addCategory: #'IA-EN-Dictionary'!
 
@@ -65,12 +65,12 @@ buildMorphicWindow
 	
 	^ self! !
 
-!IEDictWindow methodsFor: 'GUI building' stamp: 'pa 9/22/2020 12:25:57'!
+!IEDictWindow methodsFor: 'GUI building' stamp: 'pa 9/24/2020 15:13:10'!
 makeButtonArea
 	"Answer a LayoutMorph with our four buttons -- a column of two rows"
 	
 	|  buttonHeight buttonLayout interlinguaButtonLayout englishButtonLayout buttonArea |
-	buttonHeight := self textSizeUnit * 2.
+	buttonHeight := self textSizeUnit * 3.
 	buttonLayout := LayoutSpec proportionalWidth: 0.3 fixedHeight: buttonHeight.
 	
 	interlinguaButtonLayout := LayoutMorph newRow. "a row of two buttons"
